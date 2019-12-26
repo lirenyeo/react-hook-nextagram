@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import LoadingIndicator from '../components/LoadingIndicator'
 import { GET_USER_INFO } from '../constants/api'
+import UserImages from '../containers/UserImages'
 
 const Page = styled.div`
   text-align: center;
@@ -34,7 +35,9 @@ const UserProfilePage = () => {
   return (
     <Page>
       <h2>{user.username}</h2>
-      <img className="profile-img" src={user.profileImage} />
+      <img className="profile-img" src={user.profileImage} alt="user avatar" />
+      <hr />
+      <UserImages userId={user.id} center/>
     </Page>
   )
 }

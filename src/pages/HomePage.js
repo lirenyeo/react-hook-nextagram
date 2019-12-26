@@ -8,6 +8,11 @@ import { GET_ALL_USERS } from '../constants/api'
 import UserImages from '../containers/UserImages'
 import LoadingIndicator from '../components/LoadingIndicator'
 
+const EachUser = styled(Row)`
+  padding: 10px 5px;
+  margin-bottom: 3em;
+`
+
 const UserAvatar = styled.div`
   display: flex;
   flex-direction: column;
@@ -20,8 +25,8 @@ const UserAvatar = styled.div`
   }
 
   img {
-    height: 100px;
-    width: 100px;
+    height: 150px;
+    width: 150px;
     object-fit: cover;
     border-radius: 50%;
   }
@@ -33,7 +38,6 @@ const HomePage = () => {
 
   useEffect(() => {
     Axios.get(GET_ALL_USERS).then(result => {
-      console.log(result.data)
       setUsers(result.data)
       setLoading(false)
     })
@@ -44,17 +48,17 @@ const HomePage = () => {
   return (
     <Container>
       {users.map(({ id, username, profileImage }) => (
-        <Row key={id} className="my-4">
+        <EachUser key={id}>
           <Col sm={3} className="p-0">
             <UserAvatar>
               <Link to={`/users/${id}`}>{username}</Link>
-              <img src={profileImage} />
+              <img src={profileImage} alt="user avatar" />
             </UserAvatar>
           </Col>
           <Col sm={9} className="p-0">
             <UserImages userId={id} />
           </Col>
-        </Row>
+        </EachUser>
       ))}
     </Container>
   )

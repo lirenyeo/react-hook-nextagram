@@ -7,18 +7,17 @@ import { GET_USER_IMAGES } from '../constants/api'
 import LoadingIndicator from '../components/LoadingIndicator'
 
 const UserImagesContainer = styled.section`
-  background: lightgray;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  justify-content: ${props => props.center ? 'center' : 'inherit'};
 
   img {
     height: 150px;
+    margin: 5px;
   }
 `
 
-const UserImages = ({ userId }) => {
+const UserImages = ({ userId, center = false }) => {
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -30,7 +29,7 @@ const UserImages = ({ userId }) => {
   }, [userId])
 
   return (
-    <UserImagesContainer>
+    <UserImagesContainer center={center}>
       {loading ? (
         <LoadingIndicator />
       ) : (
