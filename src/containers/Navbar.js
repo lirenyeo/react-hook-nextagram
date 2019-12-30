@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Collapse,
   Navbar,
@@ -10,8 +10,12 @@ import {
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
+import AuthenticationModal from './AuthenticationModal'
+import useCurrentUser from '../ducks/CurrentUser'
+
 const MyNav = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [state, dispatch] = useCurrentUser()
 
   const toggle = () => setIsOpen(!isOpen)
 
@@ -31,9 +35,7 @@ const MyNav = () => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink tag={Link} to="/">
-                Home
-              </NavLink>
+              <AuthenticationModal />
             </NavItem>
           </Nav>
         </Collapse>

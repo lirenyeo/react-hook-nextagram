@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Axios from 'axios'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { Container } from 'reactstrap'
 
 import LoadingIndicator from '../components/LoadingIndicator'
 import { GET_USER_INFO } from '../constants/api'
@@ -37,7 +38,9 @@ const UserProfilePage = () => {
       <h2>{user.username}</h2>
       <img className="profile-img" src={user.profileImage} alt="user avatar" />
       <hr />
-      <UserImages userId={user.id} center/>
+      <Container>
+        <UserImages userId={user.id} center />
+      </Container>
     </Page>
   )
 }

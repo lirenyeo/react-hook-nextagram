@@ -19,9 +19,11 @@ const UserAvatar = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+  margin-bottom: 1em;
 
   a {
-    margin-bottom: 10px;
+    margin-top: 10px;
+    color: #505f6f;
   }
 
   img {
@@ -49,13 +51,13 @@ const HomePage = () => {
     <Container>
       {users.map(({ id, username, profileImage }) => (
         <EachUser key={id}>
-          <Col sm={3} className="p-0">
+          <Col md={3} className="p-0">
             <UserAvatar>
-              <Link to={`/users/${id}`}>{username}</Link>
               <img src={profileImage} alt="user avatar" />
+              <Link to={`/users/${id}`}>@{username}</Link>
             </UserAvatar>
           </Col>
-          <Col sm={9} className="p-0">
+          <Col md={9} className="p-0">
             <UserImages userId={id} />
           </Col>
         </EachUser>
