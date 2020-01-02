@@ -29,7 +29,7 @@ const AuthenticationModal = props => {
           Login
         </a>
       )}
-      <Modal isOpen={modal} toggleModal={toggleModal}>
+      <Modal isOpen={modal} toggle={toggleModal}>
         {showLogin ? (
           <LoginForm toggleModal={toggleModal} toggleForm={toggleForm} />
         ) : (

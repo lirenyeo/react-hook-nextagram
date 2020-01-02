@@ -43,7 +43,7 @@ const LoginForm = ({ toggleModal, toggleForm }) => {
     })
       .then(result => {
         console.log(result.data)
-        const { auth_token, message, status, user } = result.data
+        const { auth_token, status, user } = result.data
         if (status === 'success') {
           // setCurrentUser comes App.js through useContext
           setCurrentUser({

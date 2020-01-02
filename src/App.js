@@ -4,9 +4,13 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Navbar from './containers/Navbar'
+import LoginCheck from './components/LoginCheck'
+
 import HomePage from './pages/HomePage'
 import UserProfilePage from './pages/UserProfilePage'
 import MyProfilePage from './pages/MyProfilePage'
+import UploadPage from './pages/UploadPage'
+
 
 const AuthContext = createContext(null)
 
@@ -37,7 +41,14 @@ const App = () => {
           <UserProfilePage />
         </Route>
         <Route path="/me">
-          <MyProfilePage currentUser={currentUser}/>
+          <LoginCheck>
+            <MyProfilePage currentUser={currentUser} />
+          </LoginCheck>
+        </Route>
+        <Route path="/upload">
+          <LoginCheck>
+            <UploadPage currentUser={currentUser} />
+          </LoginCheck>
         </Route>
       </Switch>
     </AuthContext.Provider>

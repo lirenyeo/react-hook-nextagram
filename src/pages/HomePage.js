@@ -39,10 +39,16 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    let unmounted = false
     Axios.get(GET_ALL_USERS).then(result => {
-      setUsers(result.data)
-      setLoading(false)
+      if (!unmounted) {
+        setUsers(result.data)
+        setLoading(false)
+      }
     })
+    return () => {
+      unmounted = true
+    }
   }, [])
 
   if (loading) return <LoadingIndicator fullPage />

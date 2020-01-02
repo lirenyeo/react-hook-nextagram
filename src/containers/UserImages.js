@@ -47,10 +47,16 @@ const UserImages = ({ userId, center = false }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    let unmounted = false
     Axios.get(GET_USER_IMAGES(userId)).then(result => {
-      setImages(result.data)
-      setLoading(false)
+      if (!unmounted) {
+        setImages(result.data)
+        setLoading(false)
+      }
     })
+    return () => {
+      unmounted = true
+    }
   }, [userId])
 
   return (

@@ -15,9 +15,10 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
+import { toast } from 'react-toastify'
 
 import AuthenticationModal from './AuthenticationModal'
-import { toast } from 'react-toastify'
+import UploadIcon from '../images/upload.svg'
 
 const StyledNavbar = styled(Navbar)`
   .navbar-brand {
@@ -26,7 +27,7 @@ const StyledNavbar = styled(Navbar)`
 
   .navbar-brand:hover {
     transform: scale(1.05);
-    filter: hue-rotate(90deg);
+    filter: hue-rotate(50deg);
   }
 `
 
@@ -36,7 +37,7 @@ const NavDropdown = styled(NavItem)`
     box-shadow: none;
   }
 
-  img {
+  img.avatar {
     height: 40px;
     border-radius: 50%;
     border: solid 2px lightgray;
@@ -44,15 +45,21 @@ const NavDropdown = styled(NavItem)`
   }
 
   &:hover {
-    img {
+    img.avatar {
       border-width: 3px;
     }
+  }
+
+  img.icon {
+    margin-left: 1em;
+    height: 17px;
+    line-height: 17px;
   }
 `
 
 const MyNav = ({ setCurrentUser, currentUser }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [dropdown, setDropdown] = useState(true)
+  const [dropdown, setDropdown] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
   const toggleDropdown = () => setDropdown(!dropdown)
@@ -86,6 +93,7 @@ const MyNav = ({ setCurrentUser, currentUser }) => {
                 <Dropdown size="sm" isOpen={dropdown} toggle={toggleDropdown}>
                   <DropdownToggle color="transparent" caret>
                     <img
+                      className="avatar"
                       alt="user avatar"
                       src={
                         currentUser.user.profile_picture ||
@@ -98,6 +106,10 @@ const MyNav = ({ setCurrentUser, currentUser }) => {
                       Hi, {currentUser.user.username}!
                     </DropdownItem>
                     <DropdownItem divider />
+                    <DropdownItem className="text-info" tag={Link} to="/upload">
+                      Upload Image
+                      <img src={UploadIcon} alt="upload icon" className="icon" />
+                    </DropdownItem>
                     <DropdownItem tag={Link} to="/me">
                       Profile Page
                     </DropdownItem>
