@@ -106,6 +106,8 @@ const UploadPage = () => {
         <FormGroup>
           <label className="file">
             <input
+              capture
+              accept="image/*"
               type="file"
               id="file"
               onChange={handleFileInput}

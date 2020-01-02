@@ -25,8 +25,8 @@ const MyProfilePage = ({ currentUser }) => {
         paddingTop: '50px'
       }}
     >
-      <img style={{ height: '40vh' }} src={TowPic} alt="under construction" />
-      <h3 className="text-muted mt-5">
+      <img style={{ maxWidth: '400px', width: '100%' }} src={TowPic} alt="under construction" />
+      <h3 className="text-muted text-center mt-5">
         Hey {currentUser.user.username}! Sorry, your page is under construction!
       </h3>
       {myImages.length ? (
