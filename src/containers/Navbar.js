@@ -1,10 +1,5 @@
-import React, { useState } from 'react'
-import {
-  Navbar,
-  NavbarBrand,
-  Nav,
-  NavItem
-} from 'reactstrap'
+import React, { useState, useRef, useEffect } from 'react'
+import { Navbar, NavbarBrand, Nav, NavItem } from 'reactstrap'
 import styled from 'styled-components'
 import { Link, useHistory } from 'react-router-dom'
 import {
@@ -14,13 +9,26 @@ import {
   DropdownItem
 } from 'reactstrap'
 import { toast } from 'react-toastify'
+import throttle from 'lodash/throttle'
 
 import AuthenticationModal from './AuthenticationModal'
 import UploadIcon from '../images/upload.svg'
+import Logo from '../images/logo.png'
 
 const StyledNavbar = styled(Navbar)`
+  padding: ${props => (props.scrolled ? '5px' : '15px')} 10px;
+  background-color: white;
+  transition: 300ms;
+
   .navbar-brand {
     transition: 0.3s;
+
+    img {
+      padding-bottom: 5px;
+      transition: 0.3s;
+      height: ${props => (props.scrolled ? '50px' : '39px')};
+      ${props => props.scrolled && `transform: translateX(10px);`}
+    }
   }
 
   .navbar-brand:hover {
@@ -57,6 +65,27 @@ const NavDropdown = styled(NavItem)`
 
 const MyNav = ({ setCurrentUser, currentUser }) => {
   const [dropdown, setDropdown] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  const navRef = useRef()
+  navRef.current = isScrolled
+  useEffect(() => {
+    const handleScroll = () => {
+      const show = window.scrollY > 100
+      if (navRef.current !== show) {
+        setIsScrolled(show)
+      }
+    }
+    document.addEventListener(
+      'scroll',
+      throttle(() => {
+        handleScroll()
+      }, 100)
+    )
+    return () => {
+      document.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const toggleDropdown = () => setDropdown(!dropdown)
 
@@ -71,15 +100,14 @@ const MyNav = ({ setCurrentUser, currentUser }) => {
 
   return (
     <div id="nav">
-      <StyledNavbar color="transparent" light expand="md">
+      <StyledNavbar scrolled={isScrolled} light expand="md" fixed="top">
         <NavbarBrand tag={Link} to="/" href="/">
-          <img
-            height="35"
-            width="47"
-            src="https://cdn.dribbble.com/users/41636/screenshots/2719580/instagram-logo-concept.jpg"
-            alt=""
-          />
-          Reacta<span className="text-info">gram</span>
+          <img height="39" src={Logo} alt="" />
+          {!isScrolled && (
+            <>
+              eacta<span className="text-info">gram</span>
+            </>
+          )}
         </NavbarBrand>
 
         <Nav className="ml-auto" navbar>

@@ -11,7 +11,6 @@ import UserProfilePage from './pages/UserProfilePage'
 import MyProfilePage from './pages/MyProfilePage'
 import UploadPage from './pages/UploadPage'
 
-
 const AuthContext = createContext(null)
 
 const App = () => {
@@ -33,24 +32,26 @@ const App = () => {
         position={toast.POSITION.BOTTOM_CENTER}
       />
       <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-      <Switch>
-        <Route exact path="/">
-          <HomePage />
-        </Route>
-        <Route path="/users/:id">
-          <UserProfilePage />
-        </Route>
-        <Route path="/me">
-          <LoginCheck>
-            <MyProfilePage currentUser={currentUser} />
-          </LoginCheck>
-        </Route>
-        <Route path="/upload">
-          <LoginCheck>
-            <UploadPage currentUser={currentUser} />
-          </LoginCheck>
-        </Route>
-      </Switch>
+      <div style={{ marginTop: '66px' }}>
+        <Switch>
+          <Route exact path="/">
+            <HomePage />
+          </Route>
+          <Route path="/users/:id">
+            <UserProfilePage />
+          </Route>
+          <Route path="/me">
+            <LoginCheck>
+              <MyProfilePage currentUser={currentUser} />
+            </LoginCheck>
+          </Route>
+          <Route path="/upload">
+            <LoginCheck>
+              <UploadPage currentUser={currentUser} />
+            </LoginCheck>
+          </Route>
+        </Switch>
+      </div>
     </AuthContext.Provider>
   )
 }
