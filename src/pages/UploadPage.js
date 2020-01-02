@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Form, FormGroup, FormText, Button, Input, Container } from 'reactstrap'
+import { Form, FormGroup, FormText, Button, Container } from 'reactstrap'
 import Axios from 'axios'
 import { toast } from 'react-toastify'
 
