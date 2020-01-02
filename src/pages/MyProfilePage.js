@@ -1,8 +1,17 @@
 import React from 'react'
 import { Container } from 'reactstrap'
 import TowPic from '../images/tow.svg'
+import { useHistory } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
-const MyProfilePage = () => {
+const MyProfilePage = ({ currentUser }) => {
+  let history = useHistory()
+
+  if (!currentUser.jwt) {
+    history.push('/')
+    toast('Please log in first')
+  }
+
   return (
     <Container
       style={{
@@ -14,7 +23,9 @@ const MyProfilePage = () => {
       }}
     >
       <img style={{ height: '40vh' }} src={TowPic} alt="under construction" />
-      <h3 className="text-muted mt-5">Under Construction</h3>
+      <h3 className="text-muted mt-5">
+        Hey {currentUser.username}! Sorry, your page is under construction!
+      </h3>
     </Container>
   )
 }

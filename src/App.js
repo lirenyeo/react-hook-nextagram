@@ -37,7 +37,7 @@ const App = () => {
           <UserProfilePage />
         </Route>
         <Route path="/me">
-          <MyProfilePage />
+          <MyProfilePage currentUser={currentUser}/>
         </Route>
       </Switch>
     </AuthContext.Provider>
