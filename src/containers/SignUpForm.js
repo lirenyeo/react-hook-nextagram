@@ -10,6 +10,8 @@ import {
   Label,
   Input
 } from 'reactstrap'
+import { useHistory } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const initialState = {
   email: '',
@@ -23,19 +25,40 @@ const reducer = (state, { field, value }) => ({
 })
 
 const SignUpForm = ({ toggleModal, toggleForm }) => {
+  const history = useHistory()
   const [state, dispatch] = useReducer(reducer, initialState)
   const [isLoading, setIsLoading] = useState(false)
   const [hasError, setHasError] = useState(false)
+  const [timer, setTimer] = useState(null)
+  const [validUser, setValidUser] = useState(null)
+  // null -- show no message
+  // 'invalid' -- show username is invalid
+  // 'valid' -- show username is valid
 
   const { username, email, password } = state
 
   const handleInput = ({ target: { name, value } }) => {
+    // if typing in 'username' field
+    if (name === 'username') {
+      setValidUser(null) // to clear info message
+      clearTimeout(timer) // reset timer
+
+      const newTimer = setTimeout(() => {
+        // make api call to check if username is valid
+        Axios.get(
+          `https://insta.nextacademy.com/api/v1/users/check_name?username=${value}`
+        ).then(result => {
+          setValidUser(result.data.valid ? 'valid' : 'invalid')
+        })
+      }, 500)
+      setTimer(newTimer)
+    }
+
     dispatch({
       field: name,
       value
     })
   }
-
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -43,26 +66,44 @@ const SignUpForm = ({ toggleModal, toggleForm }) => {
     Axios.post('https://insta.nextacademy.com/api/v1/users/', {
       email,
       password,
-      username,
+      username
     })
-    .then(res => {
-      console.log(res)
-      setIsLoading(false)
-      setHasError(false)
-      toggleModal()
-    })
-    .catch(err => {
-      console.log(err.response)
-      setIsLoading(false)
-      setHasError(true)
-    })
+      .then(res => {
+        console.log(res)
+        const { user, message } = res.data
+
+        setIsLoading(false) // remove loading indicator
+        setHasError(false) // remove previous error message if any
+        toast(message) // show popup message
+        toggleModal() // close modal
+        history.push(`/users/${user.id}`) // go to user profile page
+      })
+      .catch(err => {
+        console.log(err.response)
+        setHasError(true) // show error
+        setIsLoading(false) // remove loading indicator
+        err.response.data.message.forEach(msg => toast(msg))
+      })
   }
 
+  const displayHelperMessage = () => {
+    if (validUser) {
+      if (validUser === 'valid') {
+        return <p className="text-success">Username is available!!</p>
+      } else {
+        return <p className="text-danger">Username has been taken!</p>
+      }
+    } else {
+      return null
+    }
+  }
   return (
     <>
       <ModalHeader toggle={toggleModal}>Sign Up</ModalHeader>
       <ModalBody>
-        { hasError && <p className='text-danger'>Invalid credentials. Try again.</p> }
+        {hasError && (
+          <p className="text-danger text-center">Invalid credentials. Try again.</p>
+        )}
 
         <Form id="login-form" onSubmit={handleSubmit}>
           <FormGroup>
@@ -73,6 +114,7 @@ const SignUpForm = ({ toggleModal, toggleForm }) => {
               value={username}
               onChange={handleInput}
             />
+            {displayHelperMessage()}
           </FormGroup>
           <FormGroup>
             <Label>Email</Label>
@@ -95,14 +137,20 @@ const SignUpForm = ({ toggleModal, toggleForm }) => {
         </Form>
         <p style={{ fontSize: '0.9em' }}>
           Already a member?{' '}
-          <a href="#" onClick={toggleForm}>
+          <a
+            href="/"
+            onClick={e => {
+              e.preventDefault()
+              toggleForm()
+            }}
+          >
             Log in here.
           </a>
         </p>
       </ModalBody>
       <ModalFooter>
         <input
-          className="btn btn-primary"
+          className="btn btn-info"
           type="submit"
           value="Sign Up"
           form="login-form"

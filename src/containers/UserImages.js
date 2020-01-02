@@ -62,7 +62,7 @@ const UserImages = ({ userId, center = false }) => {
       ) : (
         <UserImagesContainer center={center}>
           {images.map(img => (
-            <div className="brick">
+            <div key={img.id} className="brick">
               <Image src={img.url} alt="user uploaded pics" />
             </div>
           ))}

@@ -1,27 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Modal } from 'reactstrap'
 
 import LoginForm from './LogInForm'
 import SignUpForm from './SignUpForm'
+import { AuthContext } from '../App'
 
 const AuthenticationModal = props => {
   const [modal, setModal] = useState(false)
   const [showLogin, setshowLogin] = useState(true)
 
+  const { currentUser } = useContext(AuthContext)
+
   const toggleForm = () => setshowLogin(!showLogin)
 
   const toggleModal = () => setModal(!modal)
 
-  const logout = () => alert('logged out')
-
   return (
-    <div>
-      {localStorage.jwt ? (
-        <a href="#" className="nav-link" onClick={logout}>
-          Log Out
-        </a>
-      ) : (
-        <a href="#" className="nav-link" onClick={toggleModal}>
+    <>
+      {!currentUser.jwt && (
+        <a
+          href="/"
+          className="nav-link"
+          onClick={e => {
+            e.preventDefault()
+            toggleModal()
+          }}
+        >
           Login
         </a>
       )}
@@ -32,7 +36,7 @@ const AuthenticationModal = props => {
           <SignUpForm toggleModal={toggleModal} toggleForm={toggleForm} />
         )}
       </Modal>
-    </div>
+    </>
   )
 }
 
