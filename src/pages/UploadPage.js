@@ -11,6 +11,15 @@ const StyledContainer = styled(Container)`
   align-items: center;
   padding-top: 50px;
   flex-direction: column;
+
+  .file-custom {
+    overflow: hidden;
+    white-space: nowrap;
+
+    &:after {
+      content: '${props => props.fileName || 'Choose file...'}';
+    }
+  }
 `
 
 const PreviewContainer = styled.div`
@@ -85,20 +94,26 @@ const UploadPage = () => {
       })
   }
   const handleFileInput = e => {
-    setPreviewImage(URL.createObjectURL(e.target.files[0]))
-    setImageFile(e.target.files[0])
+    if (e.target.files && e.target.files.length) {
+      setPreviewImage(URL.createObjectURL(e.target.files[0]))
+      setImageFile(e.target.files[0])
+    }
   }
 
   return (
-    <StyledContainer>
+    <StyledContainer fileName={imageFile && imageFile.name}>
       <Form onSubmit={handleUpload}>
         <FormGroup>
-          <Input
-            type="file"
-            name="image-file"
-            onChange={handleFileInput}
-            multiple={false}
-          />
+          <label className="file">
+            <input
+              type="file"
+              id="file"
+              onChange={handleFileInput}
+              multiple={false}
+            />
+            <span className="file-custom"></span>
+          </label>
+
           <FormText color="muted">
             Make sure the image being uploaded is a supported format.
           </FormText>
