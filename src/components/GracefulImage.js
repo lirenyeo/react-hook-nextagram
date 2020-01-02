@@ -225,7 +225,9 @@ class GracefulImage extends Component {
       : {
           backgroundImage:
             'url(https://resources.construx.com/wp-content/uploads/2016/08/gif-placeholder.gif)',
-          backgroundSize: 'contain'
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center'
         }
 
     return (
