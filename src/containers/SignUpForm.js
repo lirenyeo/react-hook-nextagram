@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react'
+import React, { useState, useContext, useReducer } from 'react'
 import Axios from 'axios'
 import {
   Button,
@@ -13,6 +13,8 @@ import {
 import { useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
+import { AuthContext } from '../App'
+
 const initialState = {
   email: '',
   username: '',
@@ -26,7 +28,10 @@ const reducer = (state, { field, value }) => ({
 
 const SignUpForm = ({ toggleModal, toggleForm }) => {
   const history = useHistory()
+
   const [state, dispatch] = useReducer(reducer, initialState)
+  const { setCurrentUser } = useContext(AuthContext)
+
   const [isLoading, setIsLoading] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [timer, setTimer] = useState(null)
@@ -70,13 +75,19 @@ const SignUpForm = ({ toggleModal, toggleForm }) => {
     })
       .then(res => {
         console.log(res)
-        const { user, message } = res.data
-
+        const { auth_token, user, message } = res.data
+        setCurrentUser({
+          jwt: auth_token,
+          user
+        })
+        localStorage.setItem('jwt', auth_token) // store jwt
+        localStorage.setItem('user', JSON.stringify(user)) //JSON.parse(localStorage.user) to get back the object
         setIsLoading(false) // remove loading indicator
         setHasError(false) // remove previous error message if any
         toast(message) // show popup message
         toggleModal() // close modal
-        history.push(`/users/${user.id}`) // go to user profile page
+        history.push(`/me`) // go to user profile page
+
       })
       .catch(err => {
         console.log(err.response)
@@ -102,7 +113,9 @@ const SignUpForm = ({ toggleModal, toggleForm }) => {
       <ModalHeader toggle={toggleModal}>Sign Up</ModalHeader>
       <ModalBody>
         {hasError && (
-          <p className="text-danger text-center">Invalid credentials. Try again.</p>
+          <p className="text-danger text-center">
+            Invalid credentials. Try again.
+          </p>
         )}
 
         <Form id="login-form" onSubmit={handleSubmit}>
@@ -152,7 +165,7 @@ const SignUpForm = ({ toggleModal, toggleForm }) => {
         <input
           className="btn btn-info"
           type="submit"
-          value="Sign Up"
+          value={isLoading ? 'Signing Up...' : 'Sign Up'}
           form="login-form"
           disabled={isLoading}
         />

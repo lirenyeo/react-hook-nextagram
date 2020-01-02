@@ -19,6 +19,17 @@ import {
 import AuthenticationModal from './AuthenticationModal'
 import { toast } from 'react-toastify'
 
+const StyledNavbar = styled(Navbar)`
+  .navbar-brand {
+    transition: 0.3s;
+  }
+
+  .navbar-brand:hover {
+    transform: scale(1.05);
+    filter: hue-rotate(90deg);
+  }
+`
+
 const NavDropdown = styled(NavItem)`
   .btn:focus {
     outline: none;
@@ -57,7 +68,7 @@ const MyNav = ({ setCurrentUser, currentUser }) => {
 
   return (
     <div id="nav">
-      <Navbar color="transparent" light expand="md">
+      <StyledNavbar color="transparent" light expand="md">
         <NavbarBrand tag={Link} to="/" href="/">
           <img
             height="35"
@@ -65,7 +76,7 @@ const MyNav = ({ setCurrentUser, currentUser }) => {
             src="https://cdn.dribbble.com/users/41636/screenshots/2719580/instagram-logo-concept.jpg"
             alt=""
           />
-          Reactagram
+          Reacta<span className="text-info">gram</span>
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
@@ -87,7 +98,9 @@ const MyNav = ({ setCurrentUser, currentUser }) => {
                       Hi, {currentUser.user.username}!
                     </DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem tag={Link} to="/me">Profile Page</DropdownItem>
+                    <DropdownItem tag={Link} to="/me">
+                      Profile Page
+                    </DropdownItem>
                     <DropdownItem onClick={logout}>Log Out</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -98,7 +111,7 @@ const MyNav = ({ setCurrentUser, currentUser }) => {
             </NavItem>
           </Nav>
         </Collapse>
-      </Navbar>
+      </StyledNavbar>
     </div>
   )
 }

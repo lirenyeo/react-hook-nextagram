@@ -24,7 +24,7 @@ const MyProfilePage = ({ currentUser }) => {
     >
       <img style={{ height: '40vh' }} src={TowPic} alt="under construction" />
       <h3 className="text-muted mt-5">
-        Hey {currentUser.username}! Sorry, your page is under construction!
+        Hey {currentUser.user.username}! Sorry, your page is under construction!
       </h3>
     </Container>
   )

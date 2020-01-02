@@ -26,7 +26,7 @@ const App = () => {
       <ToastContainer
         className="text-center text-info"
         hideProgressBar
-        position={toast.POSITION.TOP_CENTER}
+        position={toast.POSITION.BOTTOM_CENTER}
       />
       <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
       <Switch>
