@@ -13,6 +13,7 @@ import UploadPage from './pages/UploadPage'
 
 const AuthContext = createContext(null)
 
+
 const App = () => {
   const [currentUser, setCurrentUser] = useState({
     user: localStorage.user ? JSON.parse(localStorage.user) : null,
