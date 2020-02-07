@@ -1,10 +1,12 @@
 import React, { useState, createContext } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, useLocation, useHistory } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Navbar from './containers/Navbar'
 import LoginCheck from './components/LoginCheck'
+import AnimatedSwitch from './components/AnimatedSwitch'
+
 
 import HomePage from './pages/HomePage'
 import UserProfilePage from './pages/UserProfilePage'
@@ -14,6 +16,10 @@ import UploadPage from './pages/UploadPage'
 const AuthContext = createContext(null)
 
 const App = () => {
+  let location = useLocation()
+  let history = useHistory()
+
+  console.log(location)
   const [currentUser, setCurrentUser] = useState({
     user: localStorage.user ? JSON.parse(localStorage.user) : null,
     jwt: localStorage.jwt
@@ -32,8 +38,8 @@ const App = () => {
         position={toast.POSITION.BOTTOM_CENTER}
       />
       <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-      <div style={{ marginTop: '66px' }}>
-        <Switch>
+      <div style={{ marginTop: '80px' }}>
+        <AnimatedSwitch location={location} history={history}>
           <Route exact path="/">
             <HomePage />
           </Route>
@@ -50,7 +56,7 @@ const App = () => {
               <UploadPage currentUser={currentUser} />
             </LoginCheck>
           </Route>
-        </Switch>
+        </AnimatedSwitch>
       </div>
     </AuthContext.Provider>
   )
